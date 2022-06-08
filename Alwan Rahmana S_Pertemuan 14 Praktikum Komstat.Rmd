@@ -1,0 +1,61 @@
+---
+title: "Praktikum Responsi Komstat Pertemuan 14"
+author: "Alwan Rahmana"
+date: '2022-06-08'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(tidyverse)
+```
+
+## Pendahuluan
+
+Import data kabupaten/kota
+
+```{r cars}
+data_kabkota<-read.csv("C:/Users/HP/OneDrive - Universitas Diponegoro/Documents/Kulon STIS IV/Komstat/Praktik/data_kabkota.csv")
+
+```
+
+## Korelasi
+
+Korelasi adalah istilah statistik yang digunakan untuk menyatakan derajat hubungan linear anta dua variabel. Besarnya nilai korelasi adalah di antara -1 sampai dengan 1. Sebenarnya, nilai korelasi hanya berkisar 0 sampai 1, tetapi perbedaan tanda (+)/(-) menunjukkan arah hubungan dari kedua variabel. Hubungan yang searah direpresentasikan dengan tanda (+), sedangkan hubungan yang berlawanan ditandai dengan (-).
+
+Adapun, jenis korelasi yang digunakan merupakan korelasi Moment Pearson. Jenis korelasi ini digunakan untuk mengetahui hubungan linear antar variabel dengan skala pengukuran interval atau rasio.
+
+syntax: Cor(x,y)
+
+```{r}
+View(data_kabkota)
+df <- data.frame(select(data_kabkota,RLS_2020,PKP_2020,UHH_2020,HLS_2020))
+cor(df$RLS_2020,df$HLS_2020)
+
+```
+
+## Regresi Linear Sederhana
+
+Persamaan regresi sederhana adalah salah satu metode statistik untuk mengetahui sejauh mana hubungan sebab akibat antara variabel dependent (terikat) dengan variabel independent (bebas) melalui persamaan regresi linear sederhana. syntax: reg_model \<-lm(y\~x) summary(reg_model)
+
+```{r}
+reg_model <- lm(HLS_2020 ~ RLS_2020, data = df)
+summary(reg_model)
+```
+
+Berdasarkan output di atas, didapatkan hasil bahwa:
+
+1)  Model regresinya adalah *y* = *7.6627* + *0.6345x*
+
+2)  variabel x (RLS_2020) secara signifikan berpengaruh terhadap model, terlihat dari *p-value* yang kecil dan kurang dari taraf uji 5%
+
+3)  Koefisien Determinasi menunjukkan bahwa variabel Harapan Lama Sekolah (HLS) dapat dijelaskan oleh variabel Rata Lama Sekolah (RLS) sebesar 60,62%. Dan sekitar 39,38% dijelaskan oleh variabel lain di luar model
+
+## Membuat Garis Regresi Linear Sederhana
+
+```{r}
+#Create graph
+ggplot(df,aes(x=RLS_2020,y=HLS_2020))+  geom_point(color='blue')
+
+```
